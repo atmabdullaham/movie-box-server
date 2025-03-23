@@ -31,6 +31,7 @@ async function run() {
   await client.connect();
   const database = client.db("movieDB");
   const movieCollection = database.collection("movies");
+  const favoriteCollection = database.collection("favorite");
 
 
   app.get("/movie", async (req, res) => {
@@ -38,6 +39,7 @@ async function run() {
    const result = await cursor.toArray()
    res.send(result)
   })
+
 
   app.get("/movie/:id", async (req, res) => {
    const id = req.params.id
@@ -52,6 +54,21 @@ async function run() {
    const result = await movieCollection.insertOne(newMovie);
    res.send(result)
 
+  })
+  app.post("/favorite", async (req, res) => {
+   const favoriteMovie = req.body
+   console.log(favoriteMovie)
+   const result = await favoriteCollection.insertOne(favoriteMovie);
+   res.send(result)
+
+  })
+
+  app.delete("/movie/:id", async (req, res) => {
+   const id = req.params.id
+   console.log(id)
+   const query = { _id: new ObjectId(id) };
+   const result = await movieCollection.deleteOne(query);
+   res.send(result)
   })
 
   // Send a ping to confirm a successful connection
