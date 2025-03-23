@@ -4,6 +4,7 @@ require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const e = require('express');
 
 
 
@@ -36,6 +37,14 @@ async function run() {
 
   app.get("/movie", async (req, res) => {
    const cursor = movieCollection.find();
+   const result = await cursor.toArray()
+   res.send(result)
+  })
+
+  app.get("/favorite/:email", async (req, res) => {
+   const email = req.params.email
+   const query = { email: email };
+   const cursor = favoriteCollection.find(query);
    const result = await cursor.toArray()
    res.send(result)
   })
