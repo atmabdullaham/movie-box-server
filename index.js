@@ -56,6 +56,13 @@ async function run() {
    const result = await movieCollection.findOne(query);
    res.send(result)
   })
+  
+  app.get("/update/:id", async (req, res) => {
+   const id = req.params.id
+   const query = { _id: new ObjectId(id) };
+   const result = await movieCollection.findOne(query);
+   res.send(result)
+  })
 
   app.post("/movie", async (req, res) => {
    const newMovie = req.body
