@@ -36,7 +36,12 @@ async function run() {
 
 
   app.get("/movie", async (req, res) => {
-   const cursor = movieCollection.find();
+    const {searchParams} =  req.query
+    let option = {}
+    if(searchParams){
+      option = {title:{$regex:searchParams,$options:"i"}} 
+    }
+   const cursor = movieCollection.find(option);
    const result = await cursor.toArray()
    res.send(result)
   })
